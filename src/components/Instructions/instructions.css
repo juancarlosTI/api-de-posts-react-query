@@ -1,0 +1,6 @@
+.instructions {
+    /* max-width: 480px; */
+    grid-area: instructions;
+    padding: 50px;
+    margin:20px;
+}

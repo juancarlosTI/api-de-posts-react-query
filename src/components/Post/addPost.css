@@ -1,0 +1,5 @@
+.add-post {
+    padding:50px;
+    margin:20px;
+    grid-area: add-post;
+}
