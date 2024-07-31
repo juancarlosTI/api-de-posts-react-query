@@ -3,7 +3,7 @@ import { Instructions } from './components/Instructions/Instructions'
 import { createGlobalStyle } from 'styled-components'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Exibition } from './components/Exibition/exibition'
-import { AddPost } from './components/Post/addPost'
+import { AppRoutes } from './pages/routes/routes'
 
 
 function App() {
@@ -15,8 +15,10 @@ function App() {
           <GlobalStyle />
           <Instructions />
           <Exibition />
+          <AppRoutes />
         </div>
       </QueryClientProvider>
+      
     </>
   )
 }

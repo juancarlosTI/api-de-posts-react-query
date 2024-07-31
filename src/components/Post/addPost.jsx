@@ -1,54 +1,52 @@
 import { useState } from "react"
 import './addPost.css'
+import { useForm } from "react-hook-form"
 
 export const AddPost = (props) => {
-    // const data = async () => { await fetch('https://jsonplaceholder.typicode.com/posts', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(newPost),
-    // })};
+    const {register,handleSubmit, formState: {errors}} = useForm();
 
-    const [inputs, setInputs] = useState({
-        title: '',
-        description:''
-    })
-
-    const handleInputChange = (event) => {
-        console.log(event.target.name)
-        const { target } = event
-        const { name } = target
-        const { value } = target
-
-        setInputs({
-            title: value,
-            description:value
-        })
+    const handleSubmitForm = (data) => {
+        console.log(data)
+        data.preventDefault()
+        props.addPost(data)
     }
 
-    const handleSubmit = (event) => {
-        //console.log(event)
-        event.preventDefault()
-        props.addPost(inputs)
-    }
+    // PARA TERMINAR: FAZER PAGINAÇÃO PARA PAGINA DETALHADA DO POST
 
-
+    
     return (
         <>
-            <section className="add-post" onSubmit={handleSubmit}>
-                <form>
+            <section className="add-post">
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
                     <div>
                         <label htmlFor="title-post">
                             Título do post: 
                         </label>
-                        <input type="text" id="title-post" name="title-post" onChange={handleInputChange} value={inputs.title}></input>
+                        <input 
+                        type="text" 
+                        id="title-post"
+                        className={`campo ${errors.titulo ? "campo-obrigatorio":"campo preenchido"}`}
+                        {
+                            ...register('titulo', {
+                                required: "Campo obrigatório"
+                            })
+                        }></input>
+                        {errors.titulo && <p className="error-message">{errors.titulo.message}</p>}
                     </div>
                     <div>
                         <label htmlFor="description-post">
                             Descrição do post: 
                         </label>
-                        <input type="text" id="description-post" name="description-post" onChange={handleInputChange} value={inputs.description}></input>
+                        <input 
+                        type="text" 
+                        id="description-post"
+                        className={`campo ${errors.descricao ? "campo-obrigatorio":"campo preenchido"}`}
+                        {
+                            ...register('descricao', {
+                                required: "Campo obrigatório"
+                            })
+                        }></input>
+                        {errors.descricao && <p className="error-message">{errors.descricao.message}</p>}
                     </div>
                     <input type="submit"/>
                 </form>

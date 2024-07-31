@@ -1,25 +1,25 @@
 import { useMutation, useQuery } from "react-query";
 import './exibition.css'
-import { useState } from "react";
 import { AddPost } from "../Post/addPost";
+import { Link } from "react-router-dom";
 
 async function fetchPosts() {
     const response = await fetch('https://jsonplaceholder.typicode.com/posts')
     return await response.json();
 }
 
-const PostsList = (props) => {
+export const PostsList = (props) => {
     return (
         <ul>
             {
                 props.posts.map((post) => {
                     return (
-
-                        <li key={post.id}>
-                            <h5>{post.id} - Título: {post.title}</h5>
-                            {/* <p>Descrição: {post.body}</p> */}
-                        </li>
-
+                        <>
+                            <li key={post.id}>
+                                <h5>{post.id} - Título: {post.title}</h5>
+                                {/* <p>Descrição: {post.body}</p> */}
+                            </li>
+                        </>
                     )
                 })
             }
@@ -28,46 +28,48 @@ const PostsList = (props) => {
 }
 
 export const Exibition = () => {
-    const mutation = useMutation({
-        mutationFn: async (newPost) => { await fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newPost),
-        })},
-      })
-    const [newPost,setNewPost] = useState({
-
-    })
 
     const { data, isLoading } = useQuery("post", fetchPosts, {
         refetchOnWindowFocus: false
     })
 
     if (isLoading) return <p>Está carregando...</p>
-    console.log(data)
+    console.log(data);
 
     const addPost = (newPost) => {
-        console.log(newPost)
-        //A mutação vai aqui. O novo post será postado na variável data.
-        // { await fetch('https://jsonplaceholder.typicode.com/posts', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(newPost),
-        // })}
+        const post_data = async () => {
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newPost)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro desconhecido. Não foi executado o POST')
+                }
+
+                console.log(response)
+                return await response.json()
+            } catch (error) {
+                console.error("Erro sending post: ", error)
+            }
+        }
+        post_data()
+
     }
 
     return (
         <>
-            <section  className="post-list">
+            <section className="post-list">
                 {
                     data.length > 0 ? <PostsList posts={data} /> : "Nenhum post a ser exibido"
                 }
             </section>
-            <AddPost addPost={addPost}/>
+            <AddPost addPost={addPost} />
         </>
     )
 }
