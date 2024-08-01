@@ -15,10 +15,12 @@ export const PostsList = (props) => {
                 props.posts.map((post) => {
                     return (
                         <>
-                            <li key={post.id}>
-                                <h5>{post.id} - Título: {post.title}</h5>
-                                {/* <p>Descrição: {post.body}</p> */}
-                            </li>
+                            {/* <Link to={post.id}> */}
+                                <li key={post.id}>
+                                    <h5>{post.id} - Título: {post.title}</h5>
+                                    {/* <p>Descrição: {post.body}</p> */}
+                                </li>
+                            {/* </Link> */}
                         </>
                     )
                 })
